@@ -5,7 +5,7 @@ import (
 )
 
 func TestToMap(t *testing.T) {
-	ppl, _ := RandomPeople(25, 50, 1)
+	ppl, _ := RandomPeople(25, 50, "IT", 1)
 	person := ppl[0]
 	for _, field := range AllFields {
 		err := SetFilter([]string{field})
