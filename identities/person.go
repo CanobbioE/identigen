@@ -33,19 +33,20 @@ type Person struct {
 	id                            string
 	iban                          *Iban
 	up                            *Credentials
+	nationality                   string
 }
 
 // NewPerson generates a new identity
-func NewPerson(minage, maxage int) *Person {
+func NewPerson(minage, maxage int, country string) *Person {
 	person := &Person{}
 	person.genderIsFemale = rand.Int()%2 == 0
-	var names []string
-	if person.genderIsFemale {
-		names = lists.ItalianFemaleNames
-	} else {
-		names = lists.ItalianMaleNames
-	}
+	var names, surnames []string
+
+	names, surnames, person.nationality = namesAndNation(country, person.genderIsFemale)
+
 	person.firstName = names[rand.Int()%len(names)]
+	person.lastName = surnames[rand.Int()%len(surnames)]
+
 	var age int
 	if minage == maxage {
 		age = minage
@@ -53,7 +54,8 @@ func NewPerson(minage, maxage int) *Person {
 		age = rand.Int()%(maxage-minage) + minage
 	}
 	person.birthDate = time.Date(time.Now().Year()-age, time.Month(rand.Int()%12+1), rand.Int()%28+1, 12, 0, 0, 0, time.UTC)
-	person.lastName = lists.ItalianSurnames[rand.Int()%len(lists.ItalianSurnames)]
+
+	// TODO: adapt to multi-country
 	birthInfo := lists.BirthInfo[rand.Int()%len(lists.BirthInfo)]
 	person.town = birthInfo.Paese
 	person.townCode = birthInfo.CodiceCatasto

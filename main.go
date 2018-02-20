@@ -17,6 +17,7 @@ var number = flag.Int("number", 1, "The amount of random people to generate. Mus
 var dtFmt = flag.String("dt_fmt", "eu", "The format of the dates. Supports: 'eu','us','ja'")
 var format = flag.String("format", "human", "The comma separated list of formats for the output. Supports: 'json', 'csv', 'xml', 'human'.")
 var fields = flag.String("fields", "all", "The comma separated case-sensitive list of fields to print. Use 'all' to print all of them. Supported fields are: "+strings.Join(identities.AllFields, ","))
+var country = flag.String("country", "IT", "The two characters ISO 3166 code for the identity's nationality.")
 
 func main() {
 	flag.Parse()
@@ -27,6 +28,7 @@ func main() {
 	args["number"] = *number
 	args["format"] = *format
 	args["fields"] = *fields
+	args["country"] = *country
 
 	err := identities.MainModule(args, os.Stdout)
 	if err != nil {

@@ -1,9 +1,12 @@
 package identities
 
 import (
+	"errors"
 	"math"
 	"math/rand"
 	"time"
+
+	"github.com/empijei/identigen/identities/lists"
 )
 
 // DateFormat exports the format of the date. Can be 1,2 or anything else.
@@ -54,4 +57,28 @@ func randString(charSet []rune, length int) string {
 		b[i] = charSet[rand.Intn(len(charSet))]
 	}
 	return string(b)
+}
+
+func namesAndNation(country string, genderIsFemale bool) (names, surnames []string, nationality string) {
+	switch country {
+	case "IT":
+		if genderIsFemale {
+			names = lists.ItalianFemaleNames
+		} else {
+			names = lists.ItalianMaleNames
+		}
+		nationality = "Italian"
+		surnames = lists.ItalianSurnames
+	case "US":
+		if genderIsFemale {
+			names = lists.USFemaleNames
+		} else {
+			names = lists.USMaleNames
+		}
+		nationality = "American"
+		surnames = lists.USSurnames
+	default:
+		panic(errors.New("Unsupported country code"))
+	}
+	return names, surnames, nationality
 }

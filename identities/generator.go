@@ -26,6 +26,7 @@ func MainModule(args map[string]interface{}, out io.Writer) (err error) {
 	number := args["number"].(int)
 	format := args["format"].(string)
 	fields := args["fields"].(string)
+	country := strings.ToUpper(args["country"].(string))
 
 	if number <= 0 {
 		return fmt.Errorf("'number' should be positive")
@@ -39,7 +40,7 @@ func MainModule(args map[string]interface{}, out io.Writer) (err error) {
 	}
 
 	LocalizDate = NewDateFormat(dtFmt)
-	people, err := RandomPeople(minage, maxage, number)
+	people, err := RandomPeople(minage, maxage, country, number)
 	if err != nil {
 		return err
 	}
@@ -98,13 +99,13 @@ func uniqSlice(in []string) []string {
 	return out
 }
 
-// RandomPeople generates 'count' people with the same restriction of age
-func RandomPeople(minage, maxage int, count int) (people []Person, err error) {
+// RandomPeople generates 'count' people with the same restriction of age, from the same country
+func RandomPeople(minage, maxage int, country string, count int) (people []Person, err error) {
 	if minage > maxage {
 		return nil, fmt.Errorf("maxage(%d) should not be less than minage(%d)", maxage, minage)
 	}
 	for count > 0 {
-		people = append(people, *NewPerson(minage, maxage))
+		people = append(people, *NewPerson(minage, maxage, country))
 		count--
 	}
 	return

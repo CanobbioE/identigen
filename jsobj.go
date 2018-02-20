@@ -18,8 +18,8 @@ func main() {
 	})
 }
 
-func RandomPeopleJS(minage, maxage int, count int) *js.Object {
-	ppl, err := identities.RandomPeople(minage, maxage, count)
+func RandomPeopleJS(minage, maxage int, country string, count int) *js.Object {
+	ppl, err := identities.RandomPeople(minage, maxage, country, count)
 	if err != nil {
 		panic(err)
 	}
